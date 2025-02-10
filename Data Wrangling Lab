@@ -1,0 +1,235 @@
+       0
+Hobbyist                     0
+OpenSourcer                  0
+OpenSource                  81
+Employment                   0
+Country                      0
+Student                     51
+EdLevel                    112
+UndergradMajor             737
+EduOther                   164
+OrgSize                     96
+DevType                     65
+YearsCode                    9
+Age1stCode                  13
+YearsCodePro                16
+CareerSat                    0
+JobSat                       1
+MgrIdiot                   493
+MgrMoney                   497
+MgrWant                    493
+JobSeek                      0
+LastHireDate                 0
+LastInt                    413
+FizzBuzz                    37
+JobFactors                   3
+ResumeUpdate                39
+CurrencySymbol               0
+CurrencyDesc                 0
+CompTotal                  809
+CompFreq                   206
+ConvertedComp              816
+WorkWeekHrs                122
+WorkPlan                   121
+WorkChallenge              164
+WorkRemote                   8
+WorkLoc                     32
+ImpSyn                       5
+CodeRev                      1
+CodeRevHrs                2426
+UnitTests                   29
+PurchaseHow                196
+PurchaseWhat                38
+LanguageWorkedWith          11
+LanguageDesireNextYear     134
+DatabaseWorkedWith         453
+DatabaseDesireNextYear    1042
+PlatformWorkedWith         411
+PlatformDesireNextYear     544
+WebFrameWorkedWith        1393
+WebFrameDesireNextYear    1617
+MiscTechWorkedWith        2182
+MiscTechDesireNextYear    1455
+DevEnviron                  29
+OpSys                       34
+Containers                  82
+BlockchainOrg             2322
+BlockchainIs              2610
+BetterLife                  98
+ITperson                    35
+OffOn                       38
+SocialMedia                293
+Extraversion                20
+ScreenName                 507
+SOVisit1st                 325
+SOVisitFreq                  5
+SOVisitTo                    1
+SOFindAnswer                 3
+SOTimeSaved                 50
+SOHowMuchTime             1917
+SOAccount                    1
+SOPartFreq                1128
+SOJobs                       6
+EntTeams                     5
+SOComm                       0
+WelcomeChange               85
+SONewContent              1965
+Age                        287
+Gender                      73
+Trans                      123
+Sexuality                  542
+Ethnicity                  675
+Dependents                 140
+SurveyLength                19
+SurveyEase                  14
+dtype: int64
+Find out how many rows are missing in the column 'WorkLoc'
+
+# your code goes here
+print("There are", df['WorkLoc'].isnull().sum(), "missing values in the column 'WorkLoc'")
+print("There are", df['EdLevel'].isnull().sum(), "missing values in the column 'EdLevel'")
+print("There are", df['Country'].isnull().sum(), "missing values in the column 'Country'")
+There are 32 missing values in the column 'WorkLoc'
+There are 112 missing values in the column 'EdLevel'
+There are 0 missing values in the column 'Country'
+Imputing missing values
+Find the value counts for the column WorkLoc.
+
+# your code goes here
+print('There are', df['WorkLoc'].nunique(), 'unique Work Locations in the survey:')
+
+print('\nWorkLoc                                    value count')      
+print('-------                                    -----------')
+print(df['WorkLoc'].value_counts())
+
+print('\n\nThere are', df['Employment'].nunique(), 'unique Employment values in the survey:')
+
+print('\nEmployment        value count')      
+print('----------        -----------')
+print(df['Employment'].value_counts())
+
+print('\n\nThere are', df['UndergradMajor'].nunique(), 'unique UndergradMajor values in the survey:')
+
+print('\nUndergradMajor        value count')      
+print('---------------        -----------')
+print(df['UndergradMajor'].value_counts())
+There are 3 unique Work Locations in the survey:
+
+WorkLoc                                    value count
+-------                                    -----------
+Office                                            6806
+Home                                              3589
+Other place, such as a coworking space or cafe     971
+Name: WorkLoc, dtype: int64
+
+
+There are 2 unique Employment values in the survey:
+
+Employment        value count
+----------        -----------
+Employed full-time    10968
+Employed part-time      430
+Name: Employment, dtype: int64
+
+
+There are 12 unique UndergradMajor values in the survey:
+
+UndergradMajor        value count
+---------------        -----------
+Computer science, computer engineering, or software engineering          6953
+Information systems, information technology, or system administration     794
+Another engineering discipline (ex. civil, electrical, mechanical)        759
+Web development or web design                                             410
+A natural science (ex. biology, chemistry, physics)                       403
+Mathematics or statistics                                                 372
+A business discipline (ex. accounting, finance, marketing)                244
+A social science (ex. anthropology, psychology, political science)        210
+A humanities discipline (ex. literature, history, philosophy)             207
+Fine arts or performing arts (ex. graphic design, music, studio art)      161
+I never declared a major                                                  124
+A health science (ex. nursing, pharmacy, radiology)                        24
+Name: UndergradMajor, dtype: int64
+Identify the value that is most frequent (majority) in the WorkLoc column.
+
+#make a note of the majority value here, for future reference
+# majority value is "Office" (6806)
+
+print(df['ConvertedComp'].mean())
+print(df['ConvertedComp'].median())
+131596.7316197316
+57745.0
+Impute (replace) all the empty rows in the column WorkLoc with the value that you have identified as majority.
+
+# your code goes here
+import numpy as np
+
+workloc_highest = 'Office'
+
+missing_data = df.isnull()
+#print(missing_data.head(5))
+
+print('\nValue counts for missing data in WorkLoc:\n')
+print( missing_data['WorkLoc'].value_counts())
+
+
+print('\nHere are the first 10 rows missing values for WorkLoc:')
+print(df[missing_data['WorkLoc']][['Respondent','WorkLoc']].head(10))
+
+df['WorkLoc'].replace(np.nan, workloc_highest, inplace=True)
+Value counts for missing data in WorkLoc:
+
+False    11398
+Name: WorkLoc, dtype: int64
+
+Here are the first 10 rows missing values for WorkLoc:
+Empty DataFrame
+Columns: [Respondent, WorkLoc]
+Index: []
+After imputation there should ideally not be any empty rows in the WorkLoc column.
+
+Verify if imputing was successful.
+
+# your code goes here
+print('\nNew value counts for missing data in WorkLoc:\n')
+print(missing_data['WorkLoc'].value_counts())
+# No 'True' values means that we have eliminated all empty WorkLoc values.
+New value counts for missing data in WorkLoc:
+
+False    11398
+Name: WorkLoc, dtype: int64
+Normalizing data
+There are two columns in the dataset that talk about compensation.
+
+One is "CompFreq". This column shows how often a developer is paid (Yearly, Monthly, Weekly).
+
+The other is "CompTotal". This column talks about how much the developer is paid per Year, Month, or Week depending upon his/her "CompFreq".
+
+This makes it difficult to compare the total compensation of the developers.
+
+In this section you will create a new column called 'NormalizedAnnualCompensation' which contains the 'Annual Compensation' irrespective of the 'CompFreq'.
+
+Once this column is ready, it makes comparison of salaries easy.
+
+List out the various categories in the column 'CompFreq'
+
+# your code goes here
+print(df['CompFreq'].value_counts())
+Yearly     6073
+Monthly    4788
+Weekly      331
+Name: CompFreq, dtype: int64
+Create a new column named 'NormalizedAnnualCompensation'. Use the hint given below if needed.
+
+Double click to see the Hint.
+
+# your code goes here
+
+df.loc[df['CompFreq'] == 'Yearly', 'NormalizedAnnualCompensation']  = 1  * df['CompTotal']
+df.loc[df['CompFreq'] == 'Monthly', 'NormalizedAnnualCompensation'] = 12 * df['CompTotal']
+df.loc[df['CompFreq'] == 'Weekly', 'NormalizedAnnualCompensation']  = 52 * df['CompTotal']
+
+
+df[['CompTotal','CompFreq','NormalizedAnnualCompensation']].head(20)
+
+df['NormalizedAnnualCompensation'].median()
+100000.0
