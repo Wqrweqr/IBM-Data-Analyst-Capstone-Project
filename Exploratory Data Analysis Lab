@@ -1,0 +1,186 @@
+cognitiveclass.ai logo
+Exploratory Data Analysis Lab
+Estimated time needed: 30 minutes
+
+In this module you get to work with the cleaned dataset from the previous module.
+
+In this assignment you will perform the task of exploratory data analysis. You will find out the distribution of data, presence of outliers and also determine the correlation between different columns in the dataset.
+
+Objectives
+In this lab you will perform the following:
+
+Identify the distribution of data in the dataset.
+
+Identify outliers in the dataset.
+
+Remove outliers from the dataset.
+
+Identify correlation between features in the dataset.
+
+Hands on Lab
+Import the pandas module.
+
+import pandas as pd
+Load the dataset into a dataframe.
+
+df = pd.read_csv("https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DA0321EN-SkillsNetwork/LargeData/m2_survey_data.csv")
+Distribution
+Determine how the data is distributed
+The column ConvertedComp contains Salary converted to annual USD salaries using the exchange rate on 2019-02-01.
+
+This assumes 12 working months and 50 working weeks.
+
+Plot the distribution curve for the column ConvertedComp.
+
+# your code goes here
+#df['ConvertedComp'].plot.hist(bins=12, alpha=0.5)
+#df = pd.DataFrame(np.random.rand(10, 1), columns=['ConvertedComp'])
+#df['ConvertedComp']
+
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+sns.distplot(df['ConvertedComp'], 'ConvertedComp', hist = False, kde = True)
+
+plt.show()
+
+Plot the histogram for the column ConvertedComp.
+
+# your code goes here
+df['ConvertedComp'].plot.hist(bins=12, alpha=0.5)
+<matplotlib.axes._subplots.AxesSubplot at 0x7fe8c26b41d0>
+
+What is the median of the column ConvertedComp?
+
+# your code goes here
+print('median ConvertedComp is',df['ConvertedComp'].median())
+print('median Age is',df['Age'].median())
+median ConvertedComp is 57745.0
+median Age is 29.0
+How many responders identified themselves only as a Man?
+
+# your code goes here
+print('\n\nThere are', df['Gender'].nunique(), 'unique Gender values in the survey:')
+
+print('\nGender        value count')      
+print('------        -----------')
+print(df['Gender'].value_counts())
+
+print('\n', df['Gender'].eq('Man').sum(), 'respondents identify as "Man"')
+
+There are 7 unique Gender values in the survey:
+
+Gender        value count
+------        -----------
+Man                                                            10480
+Woman                                                            731
+Non-binary, genderqueer, or gender non-conforming                 63
+Man;Non-binary, genderqueer, or gender non-conforming             26
+Woman;Non-binary, genderqueer, or gender non-conforming           14
+Woman;Man                                                          9
+Woman;Man;Non-binary, genderqueer, or gender non-conforming        2
+Name: Gender, dtype: int64
+
+ 10480 respondents identify as "Man"
+Find out the median ConvertedComp of responders identified themselves only as a Woman?
+
+# your code goes here
+df['ConvertedComp'].median()
+print('The median ConvertedComp of responders identified themselves only as a Woman is', df[df['Gender'].eq('Woman')]['ConvertedComp'].median())
+The median ConvertedComp of responders identified themselves only as a Woman is 57708.0
+Give the five number summary for the column Age?
+
+Double click here for hint.
+
+# your code goes here
+df['Age'].describe()
+count    11111.000000
+mean        30.778895
+std          7.393686
+min         16.000000
+25%         25.000000
+50%         29.000000
+75%         35.000000
+max         99.000000
+Name: Age, dtype: float64
+Plot a histogram of the column Age.
+
+# your code goes here
+df['Age'].plot.hist(bins=20, alpha=0.5)
+<matplotlib.axes._subplots.AxesSubplot at 0x7fe8c204f0d0>
+
+Outliers
+Finding outliers
+Find out if outliers exist in the column ConvertedComp using a box plot?
+
+# your code goes here
+sns.boxplot(x=df["ConvertedComp"])
+<matplotlib.axes._subplots.AxesSubplot at 0x7fe8c25013d0>
+
+sns.boxplot(x=df["Age"])
+<matplotlib.axes._subplots.AxesSubplot at 0x7fe8c205eb10>
+
+Find out the Inter Quartile Range for the column ConvertedComp.
+
+# your code goes here
+df['ConvertedComp'].describe()
+
+Q1 = df['ConvertedComp'].quantile(0.25)
+Q3 = df['ConvertedComp'].quantile(0.75)
+IQR = Q3 - Q1
+print('The middle quartiles for ConvertedComp range from',Q1, 'to',Q3,'. The interquartile range is',IQR)
+The middle quartiles for ConvertedComp range from 26868.0 to 100000.0 . The interquartile range is 73132.0
+Find out the upper and lower bounds.
+
+# your code goes here
+min_val = df['ConvertedComp'].min()
+max_val = df['ConvertedComp'].max()
+print('The min/max for ConvertedComp are',min_val, 'and', max_val)
+The min/max for ConvertedComp are 0.0 and 2000000.0
+Identify how many outliers are there in the ConvertedComp column.
+
+# your code goes here
+# It's an outlier if it is less than: Q1 - 1.5 * IQR. or if it is greater than: Q3 + 1.5 * IQR
+print('Outliers below:',df['ConvertedComp'].lt(Q1 - 1.5*IQR).sum())
+print('Outliers above:',df['ConvertedComp'].gt(Q3 + 1.5*IQR).sum())
+print('Outliers below:',df['ConvertedComp'].lt(Q1 - 1.5*IQR).sum())
+print('Median with outliers:',df['ConvertedComp'].median())
+print('Median with outliers removed:',df[df['ConvertedComp'].le(Q3 + 1.5*IQR)]['ConvertedComp'].median())
+print('Mean with outliers removed:',df[df['ConvertedComp'].le(Q3 + 1.5*IQR)]['ConvertedComp'].mean())
+Outliers below: 0
+Outliers above: 879
+Outliers below: 0
+Median with outliers: 57745.0
+Median with outliers removed: 52704.0
+Mean with outliers removed: 59883.20838915799
+Create a new dataframe by removing the outliers from the ConvertedComp column.
+
+# your code goes here
+print(df.shape)
+print(df['ConvertedComp'].gt(Q3 + 1.5*IQR).shape)
+df1 = df[df['ConvertedComp'].le(Q3 + 1.5*IQR)]
+print('total number in new dataset:',df1.shape[0])
+df[df['ConvertedComp'].gt(Q3 + 1.5*IQR)].shape
+print('total number of outliers removed:',df2.shape[0])
+df3 = df[df['ConvertedComp'].isnull()]
+print('total number of nulls removed:',df3.shape[0])
+print('total of outliers + inliers + nulls:', (9703 + 879 + 816))
+(11398, 85)
+(11398,)
+total number in new dataset: 9703
+total number of outliers removed: 879
+total number of nulls removed: 816
+total of outliers + inliers + nulls: 11398
+Correlation
+Finding correlation
+Find the correlation between Age and all other numerical columns.
+
+# your code goes here
+df.corr()['Age']
+Respondent       0.004041
+CompTotal        0.006970
+ConvertedComp    0.105386
+WorkWeekHrs      0.036518
+CodeRevHrs      -0.020469
+Age              1.000000
+Name: Age, dtype: float64
