@@ -1,0 +1,152 @@
+Collecting Job Data Using APIs
+Estimated time needed: 45 to 60 minutes
+
+Objectives
+After completing this lab, you will be able to:
+
+Collect job data from Jobs API
+Store the collected data into an excel spreadsheet.
+Note: Before starting with the assignment make sure to read all the instructions and then move ahead with the coding part.
+
+Instructions
+To run the actual lab, firstly you need to click on the Jobs_API notebook link. The file contains flask code which is required to run the Jobs API data.
+
+Now, to run the code in the file that opens up follow the below steps.
+
+Step1: Download the file.
+
+Step2: Upload it on the IBM Watson studio. (If IBM Watson Cloud service does not work in your system, follow the alternate Step 2 below)
+
+Step2(alternate): Upload it in your SN labs environment using the upload button which is highlighted in red in the image below: Remember to upload this Jobs_API file in the same folder as your current .ipynb file
+
+
+Step3: Run all the cells of the Jobs_API file. (Even if you receive an asterik sign after running the last cell, the code works fine.)
+
+If you want to learn more about flask, which is optional, you can click on this link here.
+
+Once you run the flask code, you can start with your assignment.
+
+Dataset Used in this Assignment
+The dataset used in this lab comes from the following source: https://www.kaggle.com/promptcloud/jobs-on-naukricom under the under a Public Domain license.
+
+Note: We are using a modified subset of that dataset for the lab, so to follow the lab instructions successfully please use the dataset provided with the lab, rather than the dataset from the original source.
+
+The original dataset is a csv. We have converted the csv to json as per the requirement of the lab.
+
+Warm-Up Exercise
+Before you attempt the actual lab, here is a fully solved warmup exercise that will help you to learn how to access an API.
+
+Using an API, let us find out who currently are on the International Space Station (ISS).
+The API at http://api.open-notify.org/astros.json gives us the information of astronauts currently on ISS in json format.
+You can read more about this API at http://open-notify.org/Open-Notify-API/People-In-Space/
+
+import requests # you need this module to make an API call
+import pandas as pd
+api_url = "http://api.open-notify.org/astros.json" # this url gives use the astronaut data
+response = requests.get(api_url) # Call the API using the get method and store the
+                                # output of the API call in a variable called response.
+if response.ok:             # if all is well() no errors, no network timeouts)
+    data = response.json()  # store the result in json format in a variable called data
+                            # the variable data is of type dictionary.
+ 
+print(data)   # print the data just to check the output or for debugging
+Print the number of astronauts currently on ISS.
+
+print(data.get('number'))
+Print the names of the astronauts currently on ISS.
+
+astronauts = data.get('people')
+print("There are {} astronauts on ISS".format(len(astronauts)))
+print("And their names are :")
+for astronaut in astronauts:
+    print(astronaut.get('name'))
+Hope the warmup was helpful. Good luck with your next lab!
+
+Lab: Collect Jobs Data using Jobs API
+Objective: Determine the number of jobs currently open for various technologies and for various locations
+Collect the number of job postings for the following locations using the API:
+
+Los Angeles
+New York
+San Francisco
+Washington DC
+Seattle
+Austin
+Detroit
+#Import required libraries
+import pandas as pd
+import json
+Write a function to get the number of jobs for the Python technology.
+Note: While using the lab you need to pass the payload information for the params attribute in the form of key value pairs. Refer the ungraded rest api lab in the course Python for Data Science, AI & Development link
+
+The keys in the json are
+Job Title
+
+Job Experience Required
+
+Key Skills
+
+Role Category
+
+Location
+
+Functional Area
+
+Industry
+
+Role
+
+You can also view the json file contents from the following json URL.
+
+api_url="http://127.0.0.1:5000/data"
+def get_number_of_jobs_T(technology):
+    
+    #your code goes here
+    return technology,number_of_jobs
+Calling the function for Python and checking if it works.
+
+get_number_of_jobs_T("Python")
+Write a function to find number of jobs in US for a location of your choice
+def get_number_of_jobs_L(location):
+    
+    #your coe goes here
+    return location,number_of_jobs
+Call the function for Los Angeles and check if it is working.
+
+#your code goes here
+Store the results in an excel file
+Call the API for all the given technologies above and write the results in an excel spreadsheet.
+
+If you do not know how create excel file using python, double click here for hints.
+
+Create a python list of all locations for which you need to find the number of jobs postings.
+
+#your code goes here
+Import libraries required to create excel spreadsheet
+
+# your code goes here
+Create a workbook and select the active worksheet
+
+# your code goes here
+Find the number of jobs postings for each of the location in the above list. Write the Location name and the number of jobs postings into the excel spreadsheet.
+
+#your code goes here
+Save into an excel spreadsheet named 'job-postings.xlsx'.
+
+#your code goes here
+In the similar way, you can try for below given technologies and results can be stored in an excel sheet.
+Collect the number of job postings for the following languages using the API:
+
+C
+C#
+C++
+Java
+JavaScript
+Python
+Scala
+Oracle
+SQL Server
+MySQL Server
+PostgreSQL
+MongoDB
+# your code goes here
